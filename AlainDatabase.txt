@@ -1,0 +1,87 @@
+-- phpMyAdmin SQL Dump
+-- version 3.3.9
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Jul 05, 2012 at 08:56 PM
+-- Server version: 5.1.53
+-- PHP Version: 5.3.4
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Database: `gocart3`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gc_customer_categories`
+--
+
+CREATE TABLE IF NOT EXISTS `gc_customer_categories` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` int(10) unsigned NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `slug` varchar(64) NOT NULL,
+  `route_id` int(11) NOT NULL,
+  `description` text NOT NULL,
+  `excerpt` text NOT NULL,
+  `sequence` int(10) unsigned NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `seo_title` text NOT NULL,
+  `meta` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `gc_customer_categories`
+--
+
+
+
+
+
+
+
+-- phpMyAdmin SQL Dump
+-- version 3.3.9
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Jul 05, 2012 at 08:57 PM
+-- Server version: 5.1.53
+-- PHP Version: 5.3.4
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Database: `gocart1`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gc_product_distribution_rules`
+--
+
+CREATE TABLE IF NOT EXISTS `gc_product_distribution_rules` (
+  `row_id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `allowed_qty` float(5,2) NOT NULL,
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`row_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;

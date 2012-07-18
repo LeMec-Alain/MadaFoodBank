@@ -1,0 +1,136 @@
+I need to create customer categories...And do all the maintenance of it...
+
+I need to add a distribution tab in products and in there display my tool.
+The tool will need to store stuff in the database...
+
+I need to create more administrators groups and make sure I enforce the permissions
+
+I need to do the front end...Make sure a user/customer is logged in...
+
+In need to assign a customer a category
+
+Should I generate templates for orders for each category? I think for now, it would be best...
+
+
+===============================
+Pacioretty       Desharnais          Cole
+x                      Plekanec         x
+  Praust               Eller             Armstrong
+ Bourque          Gomez             Gionta
+  Moen          Nokelainen          White
+                                               Blunden 
+ 
+ 
+           Markov                Subban
+           Gorges                  x
+           Emelin                   x
+           Kaberle                 Weber
+           Bouillon                   Diaz
+
+      
+                         Price
+                         Budaj
+================================
+
+Galchnyuk
+Sebastian Collberg
+Dalton Thrower
+Bozon
+Vail
+
+=================================
+
+
+  Quallier            Leblanc(09)      Kristo(08)
+  Collberg(12)  Galchenuk(12)  Gallagher(10)
+  Shultz              Bournival(10)   Holland(11) 
+                           Nattinen          Atsvin(09)                                                                 
+   
+   	  Tinordi(10)                Ellis(10)       
+	  Beaulieu(11)              Benett
+	                                 Thrower(12)
+	                                 
+                             	                                 
+==================================	  
+
+
+Go for a walk...Relax...You are ok...I guess...But you did not do shabbat! Again!  Not good...
+Get your laptop!!!
+
+You need more money for nex month! Stop smoking...
+Why don't you look at php pos and continue...Today you are tired and you need to do Mada stuff...
+Do Mada stuff and go back to POS to get more money...
+
+So how would you do 2 for...etc...
+
+Read mix and match vs Item kit...
+Really crazy shit!!!
+
+So you need rules...In reality, item kits should be extanded...
+
+As soon as you get a kit, then the system should detect it?
+Read on the internet some of these rules...
+
+I am pretty sure I had a blog somewhere...
+
+Work on Mada Food Bank...Must Do...
+Work on POS for thailand guy...Must Do today!!!!
+Send to Usama what you did so you get a payment!!!
+
+So, Mada Food Bank...
+
+Do the maintenance of Customer Categories...
+===============================
+
+Create a table
+Create a controller
+Create a model
+Create a form
+Create a language file
+Do everything properly
+Assign a customer to a category
+
+
+
+In Customer Categories Controller...
+
+He has 
+	Construct
+	Index
+	Organize
+	Process_organization
+	Form
+	Delete
+What the fuck are those?
+
+flash and data and redirect to stop people from refreshing re submitting...Really I would love to know how..
+
+So, in index, he sets the Title from the language file
+He gets all the categories
+and loads the view passing the data
+	Pretty standard stuff so what is the big deal?
+
+The view is a list of all categories...
+
+Need sting in language file for must select...
+Organize corresponds to the tab?
+
+
+Why am I loading Category Form what is that?
+
+I need to create a file Customer_Category_Form
+
+
+When I get logged out, the action still takes place and then I get redirected to login screen...Is that good or bad? I don't know
+
+
+I do not get a confirmation when I add a Customer Category!
+
+So I am doing ok with categories....
+
+
+
+
+
+
+

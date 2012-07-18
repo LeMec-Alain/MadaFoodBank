@@ -1,0 +1,16 @@
+Added on left panel menu for admin Customer categories and language file entry...
+
+Create customer_categories controller
+Created Customer_categories_model model
+Created customer_categories view
+Created customer_category_lang file
+
+Need to fix the files above and make sure that they work well along with languages files...
+
+
+July 5 2012...
+=========
+
+Doing the above...
+
+
