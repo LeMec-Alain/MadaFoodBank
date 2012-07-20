@@ -1,3 +1,5 @@
+This is based on version 1.2.3 but has been heavily modified so upgrades to newer versions on the product are no longer possible...
+
 Version 1.2.3
 -------------
 	Release date: March 8, 2012

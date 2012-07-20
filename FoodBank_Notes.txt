@@ -1,0 +1,34 @@
+July 20 2012
+=========
+
+
+Implemented the ability to create Customer categories and to assign such a category(only one) to a customer.
+	Notes: Need to make sure that only one can be checked at a time, although it now only stores the "latest/last" selected category.
+	When editing, if nothing is checked, then the last selcted one is kept, which is ok sonce we need at least one category.
+	When creating a new customer, we need to make sure(validation) that at least one category is selected.
+	Need to provide the ability to add more information for each customer as per Mada needs.
+
+	
+Database changes are required for the above changes. A new filed in customer table along with a table to store all categories.
+Need to create and edit language file for this...
+
+Road Map: Continue improving and testing this feature...
+
+
+
+Added distribution Tab to products
+
+Solve the session login timeout stuff...
+
+Make this database and code base version up to date(Database is the same...goCart3)
+
+Should I redo the changes manually or simply copy the version?
+I am not sure but I have to do it!!!
+
+
+Take the repo version and do the Distribution tab for products!!! 
+That will motivate you!!!!...
+
+
+4:37
+

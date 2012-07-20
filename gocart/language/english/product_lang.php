@@ -41,6 +41,7 @@ $lang['digital_content']			= 'Digital Content';
 $lang['digital_products_desc']		= 'Downloadable content to associate with product purchase';
 $lang['fixed_quantity_note']		= '(This restricts someone from adding multiple copies of the item to their cart.)';
 $lang['quantity_in_stock_note']		= '(This figure will only be used if the product is marked "Track Stock")';
+$lang['distribution']						= 'Distribution';
 
 //option form elements
 $lang['checklist']					= 'Check list';

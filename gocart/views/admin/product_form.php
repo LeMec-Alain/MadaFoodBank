@@ -4,10 +4,70 @@
 	.sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; height: 18px; }
 	.sortable li>span { position: absolute; margin-left: -1.3em; margin-top:.4em; }
 </style>
+
+		<style type="text/css">
+			body,img,p,h1,h2,h3,h4,h5,h6,form,table,td,ul,li,dl,dt,dd,pre,blockquote,fieldset,label{
+				margin:0;
+				padding:0;
+				border:0;
+			}
+
+			//body{ font: 90% Arial, Helvetica, sans-serif; padding: 20px; }
+			//h1{ margin: 10px 0;	color: rgb(255, 191, 85); }
+			//h2{ margin: 10px 0;	color: #99C3FF;}
+			//h4{ margin: 10px 0;	color: red; }
+			//p{ margin: 10px 0; }
+
+			.stripeTable{ width: 100%; border: solid 1px #aaaaaa; }
+			.stripeTable th{ padding: 5px; text-align: center; }
+			.stripeTable td{ padding: 5px; text-align: left; }
+			.stripeTable thead tr th{ background-color: #ffffff; border-bottom: solid 1px #aaaaaa; }
+			.stripeTable tbody tr.bg0{ background-color: rgb(244,244,244); background-color: rgba(244,244,244, .7); }
+			.stripeTable tbody tr.bg1{ background-color: rgb(255,255,255); background-color: rgba(255,255,255, .7); }
+			.stripeTable tbody tr.bg0:hover{ background-color: rgb(255, 191, 85); background-color: rgba(255, 191, 85, .7); }
+			.stripeTable tbody tr.bg1:hover{ background-color: rgb(255, 191, 85); background-color: rgba(255, 191, 85, .7); }
+			.stripeTable .col0{ background-color: #cfcfcf; }
+			.stripeTable .col1{ background-color: #ffffff; }
+			.stripeTable .colQtyRounded{ background-color: black; }
+			.stripeTable col:first-child{ background-color: #FfBf55; }
+			.stripeTable col:nth-child(6){ background-color: #aaffaa; }
+			.stripeTable col:nth-child(7){ background-color: #aaaaff; }
+			.textEdit{
+				margin-top:8px;
+				font-size:18px;
+				color:#545454;
+				-moz-border-radius: 2px;
+				-webkit-border-radius: 2px;
+				-border-radius: 2px;
+				display:none;
+				width:60px;
+				height:15px;
+				text-align:center;
+			}
+		</style>
+		<link href="<?php echo base_url('css/jquery.selectBox.css');?>" rel="stylesheet" type="text/css" />
+		<link href="<?php echo base_url('css/jquery-ui-themes/smoothness/jquery-ui-1.8.15.custom.css');?>" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="<?php echo base_url('js/jquery/jquery.selectBox.js');?>"></script>
+		<script type="text/javascript" src="<?php echo base_url('js/jquery/easy-editable-text.js');?>"></script>
+
+
+
 <script type="text/javascript">
 //<![CDATA[
 
+			var arrDropdownStrings=new Array();
+			arrDropdownStrings[0]="Select a Profile...";
+			arrDropdownStrings[1]="A demo Profile";
+
+			var arrProfiles=new Array();
+			arrProfiles[0]="";
+			arrProfiles[1]="B-1_2|C-2_3|";
+
 $(document).ready(function() {
+
+	var optionString={'0':'Select a Profile...','1':arrDropdownStrings[1]};
+	$("SELECT").selectBox('options', optionString);
+
 	$(".sortable").sortable();
 	$(".sortable > span").disableSelection();
 	//if the image already exists (phpcheck) enable the selector
@@ -17,29 +77,29 @@ $(document).ready(function() {
 	var ct	= $('#option_list').children().size();
 	//create_sortable();
 	set_accordion();
-	
+
 	// set initial count
 	option_count = <?php echo count($product_options); ?>;
-	
+
 	<?php endif; ?>
-	
+
 	$( ".add_option" ).button().click(function(){
 		add_option($(this).attr('rel'));
 	});
 	$( "#add_buttons" ).buttonset();
-	
+
 	photos_sortable();
 });
 
 function add_product_image(data)
 {
 	p	= data.split('.');
-	
+
 	var photo = '<?php add_image("'+p[0]+'", "'+p[0]+'.'+p[1]+'", '', '');?>';
 	$('#gc_photos').append(photo);
 	$('#gc_photos').sortable('destroy');
 	photos_sortable();
-	
+
 	$('.button').button();
 }
 
@@ -54,7 +114,7 @@ function remove_image(img)
 
 function photos_sortable()
 {
-	$('#gc_photos').sortable({	
+	$('#gc_photos').sortable({
 		handle : '.gc_thumbnail',
 		items: '.gc_photo',
 		axis: 'y',
@@ -64,72 +124,72 @@ function photos_sortable()
 
 function add_option(type)
 {
-	
+
 	if(jQuery.trim($('#option_name').val()) != '')
 	{
 		//increase option_count by 1
 		option_count++;
-		
+
 		$('#options_accordion').append('<?php add_option("'+$('#option_name').val()+'", "'+option_count+'", "'+type+'");?>');
-		
-		
+
+
 		//eliminate the add button if this is a text based option
 		if(type == 'textarea' || type == 'textfield')
 		{
 			$('#add_item_'+option_count).remove();
-			
+
 		}
-		
+
 		add_item(type, option_count);
-		
+
 		//reset the option_name field
 		$('#option_name').val('');
 		reset_accordion();
-		
+
 	}
 	else
 	{
 		alert('<?php echo lang('alert_must_name_option');?>');
 	}
-	
+
 }
 
 function add_item(type, id)
 {
-	
+
 	var count = $('#option_items_'+id+'>li').size()+1;
-	
+
 	append_html = '';
-	
+
 	if(type!='textfield' && type != 'textarea')
 	{
 		append_html = append_html + '<li id="value-'+id+'-'+count+'"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><a onclick="if(confirm(\'<?php echo lang('confirm_remove_value');?>\')) $(\'#value-'+id+'-'+count+'\').remove()" class="ui-state-default ui-corner-all" style="float:right;"><span class="ui-icon ui-icon-circle-minus"></span></a>';
 	}
-	
+
 	append_html += '<div style="margin:2px"><span><?php echo lang('name');?>: </span> <input class="req gc_tf2" type="text" name="option['+id+'][values]['+count+'][name]" value="" /> '+
 	'<span><?php echo lang('value');?>: </span> <input class="req gc_tf2" type="text" name="option['+id+'][values]['+count+'][value]" value="" /> '+
 	'<span><?php echo lang('weight');?>: </span> <input class="req gc_tf2" type="text" name="option['+id+'][values]['+count+'][weight]" value="" /> '+
 	'<span><?php echo lang('price');?>: </span> <input class="req gc_tf2" type="text" name="option['+id+'][values]['+count+'][price]" value="" />';
-	
+
 	if(type == 'textfield')
 	{
 		append_html += ' <span><?php echo lang('limit');?>: </span> <input class="req gc_tf2" type="text" name="option['+id+'][values]['+count+'][limit]" value="" />';
 	}
 
 	append_html += '</div> ';
-	
+
 	if(type!='textfield' && type != 'textarea')
 	{
 		append_html += '</li>';
 	}
-	
-	
-	$('#option_items_'+id).append(append_html);	
-	
+
+
+	$('#option_items_'+id).append(append_html);
+
 	$(".sortable").sortable();
 	$(".sortable > span").disableSelection();
-	
-	
+
+
 }
 
 function remove_option(id)
@@ -137,9 +197,9 @@ function remove_option(id)
 	if(confirm('<?php echo lang('confirm_remove_option');?>'))
 	{
 		$('#option-'+id).remove();
-		
+
 		option_count --;
-		
+
 		reset_accordion();
 	}
 }
@@ -152,7 +212,7 @@ function reset_accordion()
 }
 
 function set_accordion(){
-	
+
 	var stop = false;
 	$( "#options_accordion h3" ).click(function( event ) {
 		if ( stop ) {
@@ -161,7 +221,7 @@ function set_accordion(){
 			stop = false;
 		}
 	});
-	
+
 	$( "#options_accordion" ).accordion({
 		autoHeight: false,
 		active: option_count-1,
@@ -173,7 +233,7 @@ function set_accordion(){
 			stop = true;
 		}
 	});
-	
+
 
 	$('.option_item_form').sortable({
 		axis: 'y',
@@ -182,8 +242,8 @@ function set_accordion(){
 			stop = true;
 		}
 	});
-	
-	
+
+
 }
 function delete_product_option(id)
 {
@@ -209,8 +269,9 @@ function delete_product_option(id)
 		<li><a href="#gc_product_options"><?php echo lang('options');?></a></li>
 		<li><a href="#gc_product_related"><?php echo lang('related_products');?></a></li>
 		<li><a href="#gc_product_photos"><?php echo lang('images');?></a></li>
+		<li><a href="#gc_product_distribution"><?php echo lang('distribution');?></a></li>
 	</ul>
-	
+
 	<div id="gc_product_info">
 		<div class="gc_field">
 		<?php
@@ -218,7 +279,7 @@ function delete_product_option(id)
 		echo form_input($data);
 		?>
 		</div>
-			
+
 		<div class="gc_field gc_tinymce">
 		<?php
 		$data	= array('id'=>'description', 'name'=>'description', 'class'=>'tinyMCE', 'value'=>set_value('description', $description));
@@ -229,7 +290,7 @@ function delete_product_option(id)
 			<input type="button" onclick="toggleEditor('description'); return false;" value="Toggle WYSIWYG" />
 		</div>
 	</div>
-	
+
 	<div id="gc_product_attributes">
 		<div class="gc_field2">
 		<label for="sku"><?php echo lang('sku');?> </label>
@@ -324,11 +385,11 @@ function delete_product_option(id)
 		$data	= array('id'=>'excerpt', 'name'=>'excerpt', 'value'=>set_value('excerpt', $excerpt), 'class'=>'gc_tf1');
 		echo form_textarea($data);
 		?>
-        
-      
+
+
 		</div>
 	</div>
-		 
+
 	<div id="gc_product_categories">
 		<table class="gc_table" cellspacing="0" cellpadding="0">
 		    <thead>
@@ -341,7 +402,7 @@ function delete_product_option(id)
 				<?php
 				define('ADMIN_FOLDER', $this->config->item('admin_folder'));
 				function list_categories($cats, $product_categories, $sub='') {
-					
+
 					foreach ($cats as $cat):?>
 					<tr class="gc_row">
 						<td><?php echo  $sub.$cat['category']->name; ?></td>
@@ -364,7 +425,7 @@ function delete_product_option(id)
 			</tbody>
 		</table>
 	</div>
-	
+
 	<div id="gc_product_downloads">
 		<?php echo lang('digital_products_desc') ?>
 		<table class="gc_table" cellspacing="0" cellpadding="0">
@@ -373,7 +434,7 @@ function delete_product_option(id)
 						<th class="gc_cell_left"><?php echo lang('filename');?></th>
 						<th><?php echo lang('title');?></th>
 						<th style="width:70px;"><?php echo lang('size');?></th>
-						
+
 						<th class="gc_cell_right"></th>
 					</tr>
 				</thead>
@@ -391,7 +452,7 @@ function delete_product_option(id)
 		</table>
 
 	</div>
-	
+
 	<div id="gc_product_seo">
 		<div class="gc_field2">
 		<label for="seo_title"><?php echo lang('seo_title');?> </label>
@@ -400,7 +461,7 @@ function delete_product_option(id)
 		echo form_input($data);
 		?>
 		</div>
-		
+
 		<div class="gc_field">
 		<label><?php echo lang('meta');?></label> <small><?php echo lang('meta_example');?></small>
 		<?php
@@ -411,10 +472,10 @@ function delete_product_option(id)
 	</div>
 
 	<div id="gc_product_options">
-	
-		
+
+
 		<div id="selected_options" class="option_form">
-			
+
 				<span id="add_buttons" style="float:right;">
 					<input class="gc_tf2" id="option_name" style="width:200px;" type="text" name="option_name" />
 					<button type="button" class="add_option" rel="checklist"><?php echo lang('checklist');?></button>
@@ -426,14 +487,14 @@ function delete_product_option(id)
 
 			<br style="clear:both;"/>
 			<div id="options_accordion">
-			<?php 
+			<?php
 				$count	= 0;
 				if(!empty($product_options)):
 					//print_r($product_options);
 					foreach($product_options as $option):
 						//print_r($option);
 						$option	= (object)$option;
-						
+
 						if(empty($option->required))
 						{
 							$option->required = false;
@@ -441,37 +502,37 @@ function delete_product_option(id)
 					?>
 						<div id="option-<?php echo $count;?>">
 							<h3><a href="#"><?php echo $option->type.' > '.$option->name; ?> </a></h3>
-							
+
 							<div style="text-align: left">
 								<?php echo lang('option_name');?>
-								
+
 									<a style="float:right" onclick="remove_option(<?php echo $count ?>)" class="ui-state-default ui-corner-all" ><span class="ui-icon ui-icon-circle-minus"></span></a>
-								
+
 								<input class="input gc_tf2" type="text" name="option[<?php echo $count;?>][name]" value="<?php echo $option->name;?>"/>
-								
+
 								<input type="hidden" name="option[<?php echo $count;?>][type]" value="<?php echo $option->type;?>" />
 								<input class="checkbox" type="checkbox" name="option[<?php echo $count;?>][required]" value="1" <?php echo ($option->required)?'checked="checked"':'';?>/> <?php echo lang('required');?>
-								
+
 								<?php if($option->type!='textarea' && $option->type!='textfield') { ?>
 								<button id="add_item_<?php echo $count;?>" type="button" rel="<?php echo $option->type;?>"onclick="add_item($(this).attr('rel'), <?php echo $count;?>);"><?php echo lang('add_item');?></button>
 								<?php } ?>
-								
-								
+
+
 								<div class="option_item_form">
 								<?php if($option->type!='textarea' && $option->type!='textfield') { ?><ul class="sortable" id="option_items_<?php echo $count;?>"><?php } ?>
 								<?php if(!empty($option->values))
 											$valcount = 0;
-											foreach($option->values as $value) : 
+											foreach($option->values as $value) :
 												$value = (object)$value;?>
-									
+
 										<?php if($option->type!='textarea' && $option->type!='textfield') { ?><li id="value-<?php echo $count;?>-<?php echo $valcount;?>"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><?php } ?>
 										<div  style="margin:2px"><span><?php echo lang('name');?> </span><input class="req gc_tf2" type="text" name="option[<?php echo $count;?>][values][<?php echo $valcount ?>][name]" value="<?php echo $value->name ?>" />
-						
+
 										<span><?php echo lang('value');?> </span><input class="req gc_tf2" type="text" name="option[<?php echo $count;?>][values][<?php echo $valcount ?>][value]" value="<?php echo $value->value ?>" />
 										<span><?php echo lang('weight');?> </span><input class="req gc_tf2" type="text" name="option[<?php echo $count;?>][values][<?php echo $valcount ?>][weight]" value="<?php echo $value->weight ?>" />
 										<span><?php echo lang('price');?> </span><input class="req gc_tf2" type="text" name="option[<?php echo $count;?>][values][<?php echo $valcount ?>][price]" value="<?php echo $value->price ?>" />
 										<?php if($option->type == 'textfield'):?>
-										
+
 										<span><?php echo lang('limit');?> </span><input class="req gc_tf2" type="text" name="option[<?php echo $count;?>][values][<?php echo $valcount ?>][limit]" value="<?php echo $value->limit ?>" />
 
 										<?php endif;?>
@@ -482,25 +543,25 @@ function delete_product_option(id)
 										<?php if($option->type!='textarea' && $option->type!='textfield') { ?>
 										</li>
 										<?php } ?>
-										
-									
+
+
 								<?php	$valcount++;
 								 		endforeach;  ?>
 								 <?php if($option->type!='textarea' && $option->type!='textfield') { ?></ul><?php } ?>
 								</div>
-								
-								
+
+
 							</div>
 						</div>
 
-					<?php 
-					
-					
-					$count++; 
+					<?php
+
+
+					$count++;
 					endforeach;
 				endif;
 				?>
-				
+
 				</div>
 		</div>
 	</div>
@@ -512,17 +573,17 @@ function delete_product_option(id)
 				<option id="product_item_<?php echo $p->id;?>" value="<?php echo $p->id; ?>"><?php echo $p->name;?></option>
 			<?php endif; endforeach;?>
 			</select>
-			
+
 			<a href="#" onclick="add_related_product();return false;" class="button" title="Add Related Product"><?php echo lang('add_related_product');?></a>
 		</div>
-		<?php 
-		
+		<?php
+
 		$products = array();
 		foreach($product_list as $p)
 		{
 			$products[$p->id] = $p->name;
 		}
-		
+
 		?>
 		<table class="gc_table" cellspacing="0" cellpadding="0">
 			<thead>
@@ -533,7 +594,7 @@ function delete_product_option(id)
 			</thead>
 			<tbody id="product_items_container">
 			<?php if(!empty($related_products)):foreach($related_products as $rel): if(!empty($rel)) :?>
-				<?php 
+				<?php
 					if(array_key_exists($rel, $products))
 					{
 						echo related_items($rel, $products[$rel]);
@@ -549,7 +610,7 @@ function delete_product_option(id)
 			</iframe>
 			<div id="gc_photos">
 			<?php
-			
+
 			foreach($images as $photo_id=>$photo_obj)
 			{
 				if(!empty($photo_obj))
@@ -557,12 +618,230 @@ function delete_product_option(id)
 					$photo = (array)$photo_obj;
 					add_image($photo_id, $photo['filename'], $photo['alt'], $photo['caption'], isset($photo['primary']));
 				}
-				
+
 			}
 			?>
 			</div>
 		</div>
 	</div>
+	<!-- Distribution Tab -->
+	<div id="gc_product_distribution">
+ <table cellpadding="0" cellspacing="0" width="50%" >
+ 		<tr style="height:30px;">
+ 			<td>Product Quantity:</td>
+ 			<td><input type="text" value=1000 id="prodQty" style="text-align: right;">&nbsp;on hand</td>
+		</tr>
+		<tr style="height:30px;">
+			<td>Distribution Period:</td>
+			<td><input type="text" value=3 id="distPeriod" style="text-align: right;">&nbsp;months</td>
+        </tr>
+ 		<tr style="height:30px;">
+ 			<td></td>
+ 			<td><span style="color:red; text-align: right;	font-weight:bold;" id="prodPerMonth"></span>&nbsp;Products to be distributed per month.</td>
+        </tr>
+ </table>
+
+		<table cellpadding="0" cellspacing="0" class="stripeTable" width="100%">
+			<col class="col0">
+			<col class="col0">
+			<col class="col1">
+			<col class="col0">
+			<col class="col1">
+			<col class="col0">
+			<col class="col1">
+			<col class="col0">
+			<col class="col1">
+			<col class="colQtyRounded">
+			<col class="col1">
+			<thead>
+				<tr>
+					<th style="width:6%;"></th>
+					<th style="width:12%;">Categories</th>
+					<th style="width:10%;"># of Customers</th>
+					<th style="width:25%;" colspan="3">Relative Weight Factor</th>
+					<th style="width:10%;">Ext #</th>
+					<th style="width:10%;">% Weight</th>
+					<th style="width:9%;">Qty</th>
+					<th style="width:9%;">Qty Rounded</th>
+					<th style="width:9%;">Qty Total</th>
+				</tr>
+				<tr>
+					<th style="width:17%;" colspan="2">
+						<select id="standard-dropdown" name="standard-dropdown" class="custom-class1 custom-class2" style="width: 190px;">
+							<option value="0" class="test-class-1" selected="selected">Select a Profile...</option>
+						</select>
+					</th>
+					<th style="width:10%;"></th>
+					<th><input type="checkbox" id="fact-Global">Global</th>
+					<th><input type="checkbox" id="fact-Specific">Specific</th>
+					<th><input type="checkbox" id="fact-Custom">Custom</th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="CheckBox-B">
+					<td><input type="checkbox" id="Cat-A">A</td>
+				</tr>
+				<tr class="bg0 stripeRow">
+					<td class="chk"></td>
+					<td class="year"><input type="checkbox" class="SubCat-A SubCat-Check"  id="A-1">A-1</td>
+					<td class="qtr-1" style="text-align: right;"> <div contenteditable onblur="recalculate();">20</div></td>
+					<td class="factor-global" style=" text-align: center;">1</td>
+					<td class="factor-specific" style=" text-align: center;">1</td>
+					<td class="factor-custom" style=" text-align: center;" > <div class="factorEdit"  id="factor-custom-A-1">12</div><input type="text" value="" class="textEdit"/></td>
+					<td class="ext" style="text-align: right;"></td>
+					<td class="pct" style=" text-align: right;"></td>
+					<td class="qty" style=" text-align: right;"></td>
+					<td class="qty-round" style=" text-align: right;"></td>
+					<td class="qty-ext" style=" text-align: right;"></td>
+				</tr>
+				<tr class="bg1 stripeRow">
+					<td class="chk"></td>
+					<td class="year"><input type="checkbox" class="SubCat-A SubCat-Check"  id="A-2">A-2</td>
+					<td class="qtr-1" style=" text-align: right;"><div contenteditable onblur="recalculate();">80</div></td>
+					<td class="factor-global" style=" text-align: center;">1</td>
+					<td class="factor-specific" style=" text-align: center;">1</td>
+					<td class="factor-custom" style=" text-align: center;" > <div  class="factorEdit" id="factor-custom-A-2">3.8</div><input type="text" value="" class="textEdit"/></td>
+					<td class="ext" style="text-align: right;"></td>
+					<td class="pct" style=" text-align: right;"></td>
+					<td class="qty" style=" text-align: right;"></td>
+					<td class="qty-round" style=" text-align: right;"></td>
+					<td class="qty-ext" style=" text-align: right;"></td>
+				</tr>
+				<tr class="CheckBox-B">
+					<td><input type="checkbox" id="Cat-B">B</td>
+				</tr>
+				<tr class="bg0 stripeRow">
+					<td class="chk"></td>
+					<td class="year"><input type="checkbox" class="SubCat-B SubCat-Check"  id="B-1">B-1</td>
+					<td class="qtr-1" style=" text-align: right;"> <div contenteditable onblur="recalculate();">263</div></td>
+					<td class="factor-global" style=" text-align: center;">1</td>
+					<td class="factor-specific" style=" text-align: center;">1</td>
+					<td class="factor-custom" style=" text-align: center;"  id="factor-custom-B-1"> <div class="factorEdit">1</div><input type="text" value="" class="textEdit"/></td>
+					<td class="ext" style="text-align: right;"></td>
+					<td class="pct" style=" text-align: right;"></td>
+					<td class="qty" style=" text-align: right;"></td>
+					<td class="qty-round" style=" text-align: right;"></td>
+					<td class="qty-ext" style=" text-align: right;"></td>
+				</tr>
+				<tr class="bg1 stripeRow">
+					<td class="chk"></td>
+					<td class="year"><input type="checkbox" class="SubCat-B SubCat-Check"  id="B-2">B-2</td>
+					<td class="qtr-1" style=" text-align: right;"><div contenteditable onblur="recalculate();">287</div></td>
+					<td class="factor-global"style=" text-align: center;" >1</td>
+					<td class="factor-specific" style=" text-align: center;">1</td>
+					<td class="factor-custom" style=" text-align: center;" id="factor-custom-B-2" > <div class="factorEdit">1</div><input type="text" value="" class="textEdit"/></td>
+					<td class="ext" style="text-align: right;"></td>
+					<td class="pct" style=" text-align: right;"></td>
+					<td class="qty" style=" text-align: right;"></td>
+					<td class="qty-round" style=" text-align: right;"></td>
+					<td class="qty-ext" style=" text-align: right;"></td>
+				</tr>
+				<tr class="bg0 stripeRow">
+					<td class="chk"></td>
+					<td class="year"><input type="checkbox" class="SubCat-B SubCat-Check" id="B-3">B-3</td>
+					<td class="qtr-1" style=" text-align: right;"  contenteditable="true" onblur="recalculate();">62</td>
+					<td class="factor-global" style=" text-align: center;">1.5</td>
+					<td class="factor-specific" style=" text-align: center;">1</td>
+					<td class="factor-custom" style=" text-align: center;"  id="factor-custom-B-3"> <div class="factorEdit">1</div><input type="text" value="" class="textEdit"/></td>
+					<td class="ext" style="text-align: right;"></td>
+					<td class="pct" style=" text-align: right;"></td>
+					<td class="qty" style=" text-align: right;"></td>
+					<td class="qty-round" style=" text-align: right;"></td>
+					<td class="qty-ext" style=" text-align: right;"></td>
+				</tr>
+				<tr class="bg1 stripeRow">
+					<td class="chk"></td>
+					<td class="year"><input type="checkbox" class="SubCat-B SubCat-Check" id="B-4">B-4</td>
+					<td class="qtr-1"  style=" text-align: right;"  contenteditable="true" onblur="recalculate();">33</td>
+					<td class="factor-global" style=" text-align: center;">2</td>
+					<td class="factor-specific" style=" text-align: center;">1</td>
+					<td class="factor-custom" style=" text-align: center;"  id="factor-custom-B-4"> <div class="factorEdit">1</div><input type="text" value="" class="textEdit"/></td>
+					<td class="ext" style="text-align: right;"></td>
+					<td class="pct" style=" text-align: right;"></td>
+					<td class="qty" style=" text-align: right;"></td>
+					<td class="qty-round" style=" text-align: right;"></td>
+					<td class="qty-ext" style=" text-align: right;"></td>
+				</tr>
+				<tr class="CheckBox-C">
+					<td><input type="checkbox" id="Cat-C">C</td>
+				</tr>
+				<tr class="bg1 stripeRow">
+					<td class="chk"></td>
+					<td class="year"><input type="checkbox" class="SubCat-C SubCat-Check"  id="C-1">C-1</td>
+					<td class="qtr-1" style=" text-align: right;"  contenteditable="true" onblur="recalculate();">5</td>
+					<td class="factor-global" style=" text-align: center;">2</td>
+					<td class="factor-specific" style=" text-align: center;">1</td>
+					<td class="factor-custom" style=" text-align: center;"  id="factor-custom-C-1"> <div class="factorEdit">1</div><input type="text" value="" class="textEdit"/></td>
+					<td class="ext" style="text-align: right;"></td>
+					<td class="pct" style=" text-align: right;"></td>
+					<td class="qty" style=" text-align: right;"></td>
+					<td class="qty-round" style=" text-align: right;"></td>
+					<td class="qty-ext" style=" text-align: right;"></td>
+				</tr>
+				<tr class="bg0 stripeRow">
+					<td class="chk"></td>
+					<td class="year"><input type="checkbox" class="SubCat-C SubCat-Check" id="C-2">C-2</td>
+					<td class="qtr-1"  style=" text-align: right;"  contenteditable="true" onblur="recalculate();">8</td>
+					<td class="factor-global" style=" text-align: center;">2.5</td>
+					<td class="factor-specific" style=" text-align: center;">1</td>
+					<td class="factor-custom" style=" text-align: center;"  id="factor-custom-C-2"> <div class="factorEdit">1</div><input type="text" value="" class="textEdit"/></td>
+					<td class="ext" style="text-align: right;"></td>
+					<td class="pct" style=" text-align: right;"></td>
+					<td class="qty" style=" text-align: right;"></td>
+					<td class="qty-round" style=" text-align: right;"></td>
+					<td class="qty-ext" style=" text-align: right;"></td>
+				</tr>
+				<tr class="bg1 stripeRow">
+					<td class="chk"></td>
+					<td class="year"><input type="checkbox" class="SubCat-C SubCat-Check" id="C-3">C-3</td>
+					<td class="qtr-1"  style=" text-align: right;"  contenteditable="true" onblur="recalculate();">5</td>
+					<td class="factor-global" style=" text-align: center;">3</td>
+					<td class="factor-specific" style=" text-align: center;">1</td>
+					<td class="factor-custom" style=" text-align: center;"  id="factor-custom-C-3"> <div class="factorEdit">1</div><input type="text" value="" class="textEdit"/></td>
+					<td class="ext" style="text-align: right;"></td>
+					<td class="pct" style=" text-align: right;"></td>
+					<td class="qty" style=" text-align: right;"></td>
+					<td class="qty-round" style=" text-align: right;"></td>
+					<td class="qty-ext" style=" text-align: right;"></td>
+				</tr>
+				<tr class="bg0 stripeRow">
+					<td class="chk"></td>
+					<td class="year"><input type="checkbox" class="SubCat-C SubCat-Check" id="C-4">C-4</td>
+					<td class="qtr-1"  style=" text-align: right;"  contenteditable="true" onblur="recalculate();">5</td>
+					<td class="factor-global" style=" text-align: center;">3.5</td>
+					<td class="factor-specific" style=" text-align: center;">1</td>
+					<td class="factor-custom" style=" text-align: center;"  id="factor-custom-C-4"> <div class="factorEdit">1</div><input type="text" value="" class="textEdit"/></td>
+					<td class="ext" style="text-align: right;"></td>
+					<td class="pct" style=" text-align: right;"></td>
+					<td class="qty" style=" text-align: right;"></td>
+					<td class="qty-round" style=" text-align: right;"></td>
+					<td class="qty-ext" style=" text-align: right;"></td>
+				</tr>
+			</tbody>
+		</table>
+		<table cellpadding="0" cellspacing="0" class="stripeTable" width="100%">
+			<thead>
+				<tr>
+					<th style="width:18%;" colspan="2"></th>
+					<th style="width:10%;"><div id="div-CustTot" style="text-align: right;"></div></th>
+					<th style="width:25%;" colspan="3">Relative Weight Factor</th>
+					<th style="width:10%;"><div id="div-extTot" style="text-align: right;"></div></th>
+					<th style="width:10%;"><div id="div-pctTot" style="text-align: right;"></div></th>
+					<th style="width:9%;" style=" text-align: right;"></th>
+					<th style="width:9%;"><div style="color:red; text-align: right;	font-weight:bold;" id="prodPerMonthDisplay">123</div></th>
+					<th style="width:9%;"><div id="div-qtyTot" style="text-align: right;"></div></th>
+				</tr>
+			</thead>
+		</table>
+
+
+	</div>
+	<!-- Distribution Tab End -->
 </div>
 
 </form>
@@ -580,7 +859,7 @@ function add_image($photo_id, $filename, $alt, $caption, $primary=false)
 				</td>
 				<td>
 					<input type="radio" name="primary_image" value="<?php echo $photo_id;?>" <?php if($primary) echo 'checked="checked"';?>/> <?php echo lang('primary');?>
-					
+
 					<a onclick="return remove_image($(this));" rel="<?php echo $photo_id;?>" class="button" style="float:right; font-size:9px;"><?php echo lang('remove');?></a>
 				</td>
 			</tr>
@@ -604,7 +883,7 @@ function add_image($photo_id, $filename, $alt, $caption, $primary=false)
 	$stuff = ob_get_contents();
 
 	ob_end_clean();
-	
+
 	echo replace_newline($stuff);
 }
 
@@ -617,18 +896,18 @@ function add_option($name, $option_id, $type)
 		<div style="text-align: left">
 			<?php echo lang('option_name');?>
 			<span style="float:right">
-			
+
 			<a onclick="remove_option(<?php echo $option_id ?>)" class="ui-state-default ui-corner-all" style="float:right;"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
 			<input class="input gc_tf1" type="text" name="option[<?php echo $option_id;?>][name]" value="<?php echo $name;?>"/>
 			<input type="hidden" name="option[<?php echo $option_id;?>][type]" value="<?php echo $type;?>" />
 			<input class="checkbox" type="checkbox" name="option[<?php echo $option_id;?>][required]" value="1"/> <?php echo lang('required');?>
-			
-	
+
+
 			<button id="add_item_<?php echo $option_id;?>" type="button" rel="<?php echo $type;?>"onclick="add_item($(this).attr(\'rel\'), <?php echo $option_id;?>);"><?php echo lang('add_item');?></button>
-		  
+
 			<div class="option_item_form" >
 				<ul class="sortable" id="option_items_<?php echo $option_id;?>">
-				
+
 				</ul>
 			</div>
 		</div>
@@ -637,7 +916,7 @@ function add_option($name, $option_id, $type)
 	$stuff = ob_get_contents();
 
 	ob_end_clean();
-	
+
 	echo replace_newline($stuff);
 }
 //this makes it easy to use the same code for initial generation of the form as well as javascript additions
@@ -649,7 +928,7 @@ function replace_newline($string) {
 //<![CDATA[
 
 var option_count	= $('#options_accordion>h3').size();
-	
+
 var count = <?php echo $count;?>;
 
 function add_related_product()
@@ -686,7 +965,7 @@ function remove_related_product(id)
 
 function photos_sortable()
 {
-	$('#gc_photos').sortable({	
+	$('#gc_photos').sortable({
 		handle : '.gc_thumbnail',
 		items: '.gc_photo',
 		axis: 'y',
